@@ -27,6 +27,19 @@ void* arena_malloc(Arena* arena, size_t size) {
     return ptr;
 }
 
+Arena arena_sub(Arena *parent, size_t size) {
+    Arena arena;
+    void *mem = arena_malloc(parent, size);
+    if (mem == NULL) {
+        fprintf(stderr, "ERROR: size > parent capacity");
+        exit(1);
+    }
+    arena.buffer = mem;
+    arena.capacity = size;
+    arena.offset = 0;
+    return arena;
+}
+
 void arena_destroy(Arena* arena) {
     free(arena->buffer);
     arena->buffer = NULL;
